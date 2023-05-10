@@ -6,5 +6,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Playground — Complete Intro to Vue 3</title>
   </head>
-  <body></body>
+  <body>
+    <h1>Hello</h1>
+
+    <div id="app">{{message}}</div>
+    <div id="app">My App</div>
+    <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+    <script>
+      const { createApp } = Vue;
+      const app = createApp(
+        // configuration object
+        // best practice across frameworks when managing data to have this be a function that
+        // returns an object and the framework handles it from there
+        {
+          data() {
+            return {
+              // reactive data message. Rendered with curly brace syntax in div above
+              message: "Hello!",
+            };
+          },
+        }
+      );
+      // telling Vue where we want to put the app
+      app.mount("#app");
+    </script>
+  </body>
 </html>
