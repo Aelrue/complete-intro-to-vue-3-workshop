@@ -8,10 +8,26 @@
   </head>
   <body>
     <div id="app">
+      <h1>Daredevil's Cast of Characters</h1>
       <p v-if="characterList.length === 0">There are no characters</p>
-      <ul v-else>
-        <li v-for="character in characterList">{{character.name}}</li>
+      <ul v-else-if="characterList.length % 2 ===0">
+        <li v-for="character in characterList">
+          <p>{{character.name}}</p>
+          <button @click="favoriteCharacter(character)">Favorite</button>
+        </li>
       </ul>
+      <p>
+        <span v-for="(character, index) in characterList">
+          {{character.name}}{{index === characterList.length - 1 ? '' : ','}}
+        </span>
+      </p>
+      <p v-else>There are odd characters</p>
+
+      <h2>Favorite Characters</h2>
+      <ul v-if="favoriteList.length > 0 ">
+        <li v-for="character in favoriteList">{{character.name}}</li>
+      </ul>
+      <p v-else>No favorites yet!</p>
     </div>
     <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
     <script>
@@ -25,7 +41,14 @@
             { name: "Karen Page" },
             { name: "Wilson Fisk/Kingpin" },
           ],
+          favoriteList: [],
         }),
+        methods: {
+          favoriteCharacter(character) {
+            console.log("Favorite");
+            this.favoriteList.push(character);
+          },
+        },
       }).mount("#app");
     </script>
   </body>

@@ -14,8 +14,14 @@
       <h1>Counter</h1>
       <p>{{count}}</p>
       <button v-on:click="increaseCount">Increase Count</button>
-      <label for="increaseAmount">Increase By:</label>
-      <input type="number" />
+      <h1>{{increaseAmount}}</h1>
+      <div>
+        <label for="increaseAmount">Increase By:</label>
+        <!-- telling Vue: on input event, run function changeIncreaseAmount -->
+        <!-- we could use v-bind:value="increaseAmount"
+          v-on:input="changeIncreaseAmount", but v-model configures that under the hood for us -->
+        <input type="number" v-model="increaseAmount" />
+      </div>
       <hr />
       <p v-if="message.length % 2 === 0">Even: {{message.toUpperCase()}}</p>
       <p v-else>Odd: {{message}}</p>
@@ -41,7 +47,7 @@
           data() {
             return {
               count: 10,
-              increaseAmount: 10,
+              increaseAmount: 8,
               // reactive data message. Rendered with curly brace syntax in div above
               message: "Hello it works!",
               listOfNumbers: [
@@ -54,6 +60,9 @@
             };
           },
           methods: {
+            changeIncreaseAmount(event) {
+              // if we did: this.increaseAmount = event.target.value, we would see the counter simply tacking on the "Increase By:" number to the end of the count as it is a string. We could use Number(this.increaseAmount = event.target.value) and it would work, but it it would be a round-about way of doing things. Instead, we can used v-model in our input
+            },
             increaseCount() {
               this.count += this.increaseAmount;
             },
