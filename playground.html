@@ -11,10 +11,11 @@
     <!-- checking character length of the message -->
     <!-- if the length is an even number, display "Even", else "Odd" -->
     <div id="app">
-      <h1>Counter</h1>
-      <p>{{count}}</p>
+      <h1>{{displayTitle}}</h1>
+      <p :data-increment-by="increaseAmount">{{count}}</p>
       <button v-on:click="increaseCount">Increase Count</button>
       <h1>{{increaseAmount}}</h1>
+      <p>{{optimizedIncreaseAmount}}</p>
       <div>
         <label for="increaseAmount">Increase By:</label>
         <!-- telling Vue: on input event, run function changeIncreaseAmount -->
@@ -47,9 +48,11 @@
           data() {
             return {
               count: 10,
+              counterTitle: "Counter Standard",
               increaseAmount: 8,
               // reactive data message. Rendered with curly brace syntax in div above
               message: "Hello it works!",
+
               listOfNumbers: [
                 { name: 1, id: "123", list: [1, 2, 3] },
                 { name: 2, id: "456", list: [1, 2, 3] },
@@ -59,14 +62,33 @@
               ],
             };
           },
-          methods: {
-            changeIncreaseAmount(event) {
-              // if we did: this.increaseAmount = event.target.value, we would see the counter simply tacking on the "Increase By:" number to the end of the count as it is a string. We could use Number(this.increaseAmount = event.target.value) and it would work, but it it would be a round-about way of doing things. Instead, we can used v-model in our input
+          computed: {
+            displayTitle() {
+              if (this.count > 20) {
+                return "Counter Standard - Very Long";
+              } else {
+                return "Counter Standard";
+              }
             },
-            increaseCount() {
-              this.count += this.increaseAmount;
+            optimizedIncreaseAmount() {
+              return this.displayTitle.length * this.increaseAmount;
             },
           },
+          methods: {
+            increaseCount(newAmount, event) {
+              // if we did: this.increaseAmount = event.target.value, we would see the counter simply tacking on the "Increase By:" number to the end of the count as it is a string. We could use Number(this.increaseAmount = event.target.value) and it would work, but it it would be a round-about way of doing things. Instead, we can used v-model in our input
+              console.log(newAmount);
+              console.log(event);
+              this.count += this.optimizedIncreaseAmount;
+            },
+          },
+          // watch: {
+          //   count(newValue) {
+          //     if (newValue > 20) {
+          //       this.counterTitle += "Very Long";
+          //     }
+          //   },
+          // }
         }
       );
       // telling Vue where we want to put the app
