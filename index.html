@@ -8,7 +8,13 @@
   </head>
   <body>
     <div id="app">
-      <h1>Daredevil's Cast of Characters</h1>
+      <h2>Statistics</h2>
+      <ul>
+        <li v-for=" (stat, type) in characterStatistics">{{
+          type}}: {{stat}}
+        </li>
+      </ul>
+      <h2>Daredevil's Cast of Characters</h2>
       <p v-if="characterList.length === 0">There are no characters</p>
       <ul v-else-if="characterList.length % 2 ===0">
         <li v-for="character in characterList">
@@ -48,15 +54,37 @@
         data: () => ({
           newCharacter: {
             name: "",
+            role: ""
           },
           characterList: [
-            { name: "Matt Murdoch/Daredevil" },
-            { name: "Foggy Nelson" },
-            { name: "Karen Page" },
-            { name: "Wilson Fisk/Kingpin" },
+            { name: "Matt Murdoch/Daredevil", role: ["Hero", "Lawyer"] },
+            { name: "Foggy Nelson", role: "Lawyer" },
+            { name: "Karen Page", role: ["Assistant", "Reporter"] },
+            { name: "Wilson Fisk/Kingpin", role: "Villian" },
           ],
           favoriteList: [],
         }),
+
+        computed: {
+          characterStatistics(){
+            const roles = ["Hero", "Villian", "Lawyer", "Assistant", "Reporter"]
+            const statistics = {
+              Hero: 0,
+              Villian: 0,
+              Lawyer: 0,
+              Assistant: 0,
+              Reporter: 0
+            }
+            this.characterList.forEach(character =>{
+              roles.forEach(role => {
+                if (character.role.indexOf(role) > -1){
+                  statistics[role] += 1
+                }
+              })
+            })
+           return statistics
+          }
+         },
         methods: {
           addNewCharacter() {
             this.characterList.push(this.newCharacter);
